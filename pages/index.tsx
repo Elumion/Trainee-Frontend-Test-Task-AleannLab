@@ -1,24 +1,31 @@
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { JobItemType } from "../@types/responseTypes";
 import { JobItem } from "../components/JobItem";
 
 const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
 
-export default function JobListPage(props: any) {
+interface Props {
+  data: JobItemType[] | { error: string };
+}
+
+export default function JobListPage(props: Props) {
   const [arr, setArr] = useState([]);
   return (
-    <main>
-      <h1 style={{ display: "none" }}>Jobs available</h1>
-      <ul>
-        {Array.isArray(props.data)
-          ? props.data.map((el: any) => (
-              <li key={el.id}>
-                <JobItem data={el} />
-              </li>
-            ))
-          : props.data.error}
-      </ul>
+    <main className=" flex flex-col gap-[49px] min-w-full min-h-full bg-[#E6E9F2] pt-[29px] pb-[64px]">
+      <div className="max-w-[1400px] mx-auto">
+        <h1 style={{ display: "none" }}>Jobs available</h1>
+        <ul className="flex flex-col px-[8px] gap-y-[8px]   min-w-full">
+          {Array.isArray(props.data)
+            ? props.data.map((el) => (
+                <li key={el.id} className="w-full">
+                  <JobItem data={el} />
+                </li>
+              ))
+            : props.data.error}
+        </ul>
+      </div>
     </main>
   );
 }
