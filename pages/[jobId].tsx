@@ -1,12 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import React, { useEffect, useRef, useState } from "react";
 import { JobItemType } from "../@types/responseTypes";
+import { AdditionalGroup } from "../components/AdditionalGroup";
+import { AttachedImages } from "../components/AttachedImages";
 import { CustomButton } from "../components/CustomButton";
 import { formatTime } from "../shared/timeFormatter";
 const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
+
 interface Props {
   data: JobItemType;
 }
@@ -14,10 +18,7 @@ interface Props {
 export default function DetailedJob({ data }: Props) {
   const jobDescription = useRef<HTMLElement>(null);
 
-  const router = useRouter();
-  const handleReturn = () => {
-    router.back();
-  };
+  //Change <> to fa
 
   useEffect(() => {
     const { description } = data;
@@ -45,7 +46,7 @@ export default function DetailedJob({ data }: Props) {
   return (
     <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px]">
       <Script src=""></Script>
-      <div className="flex max-w-[1309px] mx-auto">
+      <div className="flex max-w-[1309px] mx-auto gap-[133px] flex-wrap">
         <div className="max-w-[723px] w-full">
           <header className=" pb-[9px] flex justify-between items-center border-b-[1px] border-[#3A4562] border-opacity-[0.13] ">
             <h1 className="text-[#3A4562] text-[28px] font-bold tracking-[0.413333px]">
@@ -140,10 +141,65 @@ export default function DetailedJob({ data }: Props) {
             }}
             text={"Apply Now"}
           />
+          <h2 className="mb-[15px] pb-[9px] border-b-[1px] border-[#3A4562] border-opacity-[0.13] font-bold text-[28px] text-[#3A4562]">
+            Additional info
+          </h2>
+          <div className="reverse_when_mini">
+            <AdditionalGroup
+              className="mb-[86px]"
+              data={{
+                [`Employment type`]: {
+                  elementsArr: data.employment_type,
+                  className:
+                    " border-[#55699e4c] bg-[#a1b1db51] text-[#55699E] ",
+                },
+                [`Benefits`]: {
+                  elementsArr: data.benefits,
+                  className: " border-[#FFCF00] bg-[#ffcf0026] text-[#988B49] ",
+                },
+              }}
+            />
+            <div>
+              <h2 className="mb-[15px] pb-[9px] border-b-[1px] border-[#3A4562] border-opacity-[0.13] font-bold text-[28px] text-[#3A4562]">
+                Attached images
+              </h2>
+              <AttachedImages data={data.pictures} />
+            </div>
+          </div>
         </div>
-        <footer className="map"></footer>
+        <footer className=" map max-w-[400px] h-fit text-[#fff]  bg-[#3a3f55] rounded-[8px]">
+          <div className="pseudo-circle backdrop-blur-none relative overflow-hidden flex flex-col gap-[8px] rounded-[8px]  px-[62px] pt-[31px] pb-[20px]">
+            <h3 className="text-[#E7EAF0] font-bold text-[20px] tracking-[-0.625px] ">
+              {data.name}
+            </h3>
+            <address className="not-italic text-[18px] font-roboto tracking-[-0.5625px]">
+              FA HERE NEED {data.address}
+            </address>
+            <Link
+              className="font-roboto text-[18px] tracking-[-0.5625px] text-[#E8EBF3]"
+              href={`mailto:${data.email}`}
+            >
+              {" "}
+              {data.email}
+            </Link>
+            <Link
+              className="font-roboto text-[18px] tracking-[-0.5625px] text-[#E8EBF3]"
+              href={`tel:${data.phone}`}
+            >
+              {data.phone.replace(
+                /(\+\d{2})(\d{2})(\d{3})(\d{2})(\d{2})/g,
+                "$1 ($2) $3-$4-$5 "
+              )}
+            </Link>
+          </div>
+        </footer>
       </div>
-      <button onClick={handleReturn}>Return</button>
+      <Link
+        href={"/"}
+        className="flex w-fit mb-[170px] uppercase mt-[89px] px-[26px] py-[18px] bg-[#384564] bg-opacity-[0.14] rounded-[8px] font-semibold text-[12px] hover:bg-[#7c7c7c] hover:text-[#fff]"
+      >
+        {"<"} RETURN TO JOB BOARD
+      </Link>
     </div>
   );
 }
