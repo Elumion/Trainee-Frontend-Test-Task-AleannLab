@@ -54,4 +54,7 @@ a {
   .job-article {
     @apply [&>span]:relative [&>span]:before:content-[""] [&>span]:before:w-[9px] [&>span]:before:h-[9px] [&>span]:before:bg-[#384564] [&>span]:before:absolute [&>span]:before:top-[50%] [&>span]:before:right-[100%] [&>span]:before:translate-y-[-50%] [&>span]:before:translate-x-[-10px] xl:[&>span]:pl-[20px] xl:[&>span]:before:translate-x-[10px];
   }
+  .pseudo-circle {
+    @apply before:content-[""] before:absolute before:top-0 before:left-0 before:translate-x-[-25%] before:translate-y-[-10%] before:w-[273px] before:h-[273px] before:rounded-[100%] before:bg-[#202336] before:z-[-1];
+  }
 }
