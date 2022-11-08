@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { Wrapper } from "@googlemaps/react-wrapper";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,8 +9,11 @@ import { JobItemType } from "../@types/responseTypes";
 import { AdditionalGroup } from "../components/AdditionalGroup";
 import { AttachedImages } from "../components/AttachedImages";
 import { CustomButton } from "../components/CustomButton";
+import { GoogleMap, Marker } from "../components/GoogleMap";
 import { formatTime } from "../shared/timeFormatter";
+import locationIcon from "../public/Location_icon.svg";
 const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
+let key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
 interface Props {
   data: JobItemType;
@@ -17,6 +21,8 @@ interface Props {
 
 export default function DetailedJob({ data }: Props) {
   const jobDescription = useRef<HTMLElement>(null);
+
+  const mapCenter = { lat: data.location.lat, lng: data.location.long };
 
   //Change <> to fa
 
@@ -44,7 +50,7 @@ export default function DetailedJob({ data }: Props) {
   }, [data.description]);
 
   return (
-    <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px]">
+    <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px] ">
       <Script src=""></Script>
       <div className="flex max-w-[1309px] mx-auto gap-[133px] flex-wrap">
         <div className="max-w-[723px] w-full">
@@ -191,6 +197,13 @@ export default function DetailedJob({ data }: Props) {
                 "$1 ($2) $3-$4-$5 "
               )}
             </Link>
+          </div>
+          <div className="h-[218px] ">
+            <Wrapper apiKey={typeof key === "undefined" ? "" : key}>
+              <GoogleMap center={mapCenter} zoom={10}>
+                <Marker position={mapCenter} icon={locationIcon.src} />
+              </GoogleMap>
+            </Wrapper>
           </div>
         </footer>
       </div>
