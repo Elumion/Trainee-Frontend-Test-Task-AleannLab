@@ -16,7 +16,7 @@ export default function AddtitionalGroup({ data, className }: Props) {
           key={el}
           className={
             data[keyType].className +
-            "inline-block text-center font-bold rounded-[8px] text-[16px] tracking-[-0.457143px] w-[222px] border-[1px] py-[17px]"
+            "inline-block text-center font-bold rounded-[8px] text-[16px] tracking-[-0.457143px] w-[222px] border-[1px] py-[17px] md:w-fit md:px-[20px]"
           }
         >
           {el}
