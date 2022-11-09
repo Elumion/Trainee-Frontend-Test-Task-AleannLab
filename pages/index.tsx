@@ -1,9 +1,14 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { JobItemType } from "../@types/responseTypes";
 import { JobItem } from "../components/JobItem";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
 
@@ -17,8 +22,6 @@ export default function JobListPage({ data }: Props) {
   const router = useRouter();
   let currentPage = router.query["page"];
   if (!currentPage || +currentPage < 1) currentPage = "1";
-  const [arr, setArr] = useState([]);
-  const [page, setPage] = useState(currentPage);
 
   const renderData = (data: JobItemType[]) => {
     const renderArr = [];
@@ -64,30 +67,30 @@ export default function JobListPage({ data }: Props) {
   };
 
   return (
-    <main className=" flex flex-col gap-[49px] min-w-full min-h-full bg-[#E6E9F2] pt-[29px] pb-[64px]">
+    <main className=" flex flex-col gap-[49px] min-w-full min-h-full bg-[#E6E9F2] pt-[29px] pb-[64px] md:pt-[9px]">
       <div className="max-w-[1400px] w-[100%] mx-auto ">
         <h1 style={{ display: "none" }}>Jobs available</h1>
         <ul className="flex flex-col px-[8px] gap-y-[8px]   min-w-full">
           {Array.isArray(data) ? renderData(data) : data.error}
         </ul>
       </div>
-      <div className="flex justify-between items-center w-fit mx-auto px-[23px]  bg-[#ffffff] shadow-pagination gap-[55px] rounded-[10px]">
+      <div className="flex justify-between items-center w-fit mx-auto   bg-[#ffffff] shadow-pagination gap-[55px] rounded-[10px] sm:w-[95%]">
         <Link
-          className="pr-[30px] border-r-[1px] border-r-[#DEE3EF]"
+          className="pr-[30px] border-r-[1px] border-r-[#DEE3EF] pl-[23px] text-[#7D859C] hover:text-[#5876C5]"
           href={`${router.basePath}?page=${
             +currentPage > 1 ? +currentPage - 1 : 1
           }`}
         >
-          {"<"}
+          <FontAwesomeIcon icon={faChevronLeft} />
         </Link>
         <ul key={42523} className="flex ">
           {renderPagination()}
         </ul>
         <Link
-          className="pl-[30px] border-l-[1px] border-l-[#DEE3EF]"
+          className="pl-[30px] border-l-[1px] border-l-[#DEE3EF] pr-[23px] text-[#7D859C] hover:text-[#5876C5]"
           href={`${router.basePath}?page=${+currentPage + 1}`}
         >
-          {">"}
+          <FontAwesomeIcon icon={faChevronRight} />
         </Link>
       </div>
     </main>
