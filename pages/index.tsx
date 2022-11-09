@@ -1,5 +1,6 @@
 import { GetStaticProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { JobItemType } from "../@types/responseTypes";
 import { JobItem } from "../components/JobItem";
@@ -10,21 +11,84 @@ interface Props {
   data: JobItemType[] | { error: string };
 }
 
-export default function JobListPage(props: Props) {
+const itemsPerPage = 7;
+
+export default function JobListPage({ data }: Props) {
+  const router = useRouter();
+  let currentPage = router.query["page"];
+  if (!currentPage || +currentPage < 1) currentPage = "1";
   const [arr, setArr] = useState([]);
+  const [page, setPage] = useState(currentPage);
+
+  const renderData = (data: JobItemType[]) => {
+    const renderArr = [];
+    for (let i = 0; i < itemsPerPage; i++) {
+      if (currentPage) {
+        const indexElement = (+currentPage - 1) * itemsPerPage + i;
+        const el = data[indexElement];
+        if (indexElement > data.length - 1) break;
+        renderArr.push(
+          <li key={el.id} className="w-full">
+            <JobItem data={el} />
+          </li>
+        );
+      }
+    }
+    return renderArr;
+  };
+
+  const renderPagination = () => {
+    const renderArr = [];
+
+    if (Array.isArray(data) && !!currentPage) {
+      let pagesToShow = Math.ceil(data.length / itemsPerPage);
+      for (let i = 1; i <= pagesToShow; i++) {
+        renderArr.push(
+          <li key={i}>
+            <Link
+              className={
+                "block font-bold text-[#70778B] text-[20px] py-[12px] px-[8px] hover:text-[#5876C5] " +
+                (i === +currentPage
+                  ? " border-b-[#5876C5] border-b-[2.5px] text-[#5876C5]"
+                  : "")
+              }
+              href={`${router.basePath}?page=${i}`}
+            >
+              {i}{" "}
+            </Link>
+          </li>
+        );
+      }
+      return renderArr;
+    }
+  };
+
   return (
     <main className=" flex flex-col gap-[49px] min-w-full min-h-full bg-[#E6E9F2] pt-[29px] pb-[64px]">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1400px] w-[100%] mx-auto ">
         <h1 style={{ display: "none" }}>Jobs available</h1>
         <ul className="flex flex-col px-[8px] gap-y-[8px]   min-w-full">
-          {Array.isArray(props.data)
-            ? props.data.map((el) => (
-                <li key={el.id} className="w-full">
-                  <JobItem data={el} />
-                </li>
-              ))
-            : props.data.error}
+          {Array.isArray(data) ? renderData(data) : data.error}
         </ul>
+      </div>
+      <div className="flex justify-between items-center w-fit mx-auto px-[23px]  bg-[#ffffff] shadow-pagination gap-[55px] rounded-[10px]">
+        <Link
+          className="pr-[30px] border-r-[1px] border-r-[#DEE3EF]"
+          href={`${router.basePath}?page=${
+            +currentPage > 1 ? +currentPage - 1 : 1
+          }`}
+        >
+          {"<"}
+        </Link>
+        <ul key={42523} className="flex ">
+          {renderPagination()}
+        </ul>
+        <Link
+          className="pl-[30px] border-l-[1px] border-l-[#DEE3EF]"
+          href={`${router.basePath}?page=${+currentPage + 1}`}
+        >
+          {">"}
+        </Link>
       </div>
     </main>
   );
