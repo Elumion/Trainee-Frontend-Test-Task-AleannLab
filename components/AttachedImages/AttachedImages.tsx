@@ -1,5 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   data: string[];
@@ -80,7 +85,7 @@ export default function AttachedImages({ data }: Props) {
             data-action="-"
             className="absolute left-[0] hover:bg-[#ececec96] px-[40px] p h-full transition-colors duration-500"
           >
-            {"<"}
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <img className="max-w-[500px]" src={openImg.src} alt="job relative" />
           <button
@@ -88,7 +93,7 @@ export default function AttachedImages({ data }: Props) {
             data-action="+"
             className="absolute right-[0] hover:bg-[#ececec96] px-[40px] p h-full transition-colors duration-500"
           >
-            {">"}
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       ) : (
