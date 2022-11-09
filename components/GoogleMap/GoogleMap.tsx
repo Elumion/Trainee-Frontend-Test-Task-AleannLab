@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import { isNull } from "util";
 
 interface Props extends google.maps.MapOptions {
   center: google.maps.LatLngLiteral;
