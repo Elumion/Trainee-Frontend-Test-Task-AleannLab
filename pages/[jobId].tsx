@@ -63,7 +63,7 @@ export default function DetailedJob({ data }: Props) {
   }, [data.description]);
 
   return (
-    <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px] ">
+    <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px] bg-[#ffffff]">
       <div className="flex max-w-[1309px] mx-auto gap-[133px] lg:gap-[15px] lg:justify-between md:flex-wrap">
         <div className="max-w-[723px] w-full md:max-w-full">
           <header className=" pb-[9px] flex justify-between items-center border-b-[1px] border-[#3A4562] border-opacity-[0.13]  md:flex-col md:items-start md:border-none md:gap-[23px]">
