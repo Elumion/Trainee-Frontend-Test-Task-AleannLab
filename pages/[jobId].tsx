@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -22,10 +23,18 @@ const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
 let key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
 interface Props {
-  data: JobItemType;
+  data: JobItemType | { error: string };
 }
 
 export default function DetailedJob({ data }: Props) {
+  if (isError(data)) {
+    return (
+      <div className="max-w-[1400px] mx-auto mt-[56px] px-[8px] ">
+        {data.error}
+      </div>
+    );
+  }
+
   const jobDescription = useRef<HTMLElement>(null);
   const router = useRouter();
 
@@ -229,7 +238,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const data: JobItemType[] = await fetch(
+  const data: JobItemType[] | { error: string } = await fetch(
     `https://api.json-generator.com/templates/ZM1r0eic3XEy/data?access_token=${token}`
   )
     .then((res) => {
@@ -238,7 +247,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
     .then((data) => {
       return data;
     });
-  const item = data?.filter((el) => el.id === context.params?.jobId)[0];
+
+  if ((data as { error: string }).error) {
+    return { props: { data: { error: (data as { error: string }).error } } };
+  }
+  const item = (data as JobItemType[])?.filter(
+    (el) => el.id === context.params?.jobId
+  )[0];
 
   return { props: { data: item } };
+};
+
+const isError = (
+  data: JobItemType | { error: string }
+): data is { error: string } => {
+  if (typeof (data as { error: string }).error === "string") return true;
+  return false;
 };
