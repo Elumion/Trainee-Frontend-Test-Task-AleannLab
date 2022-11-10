@@ -10,7 +10,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
+const token = process.env.bearer_token;
 
 interface Props {
   data: JobItemType[] | { error: string };
