@@ -24,7 +24,7 @@ export default function JobItem({ data }: Props) {
     for (let i = 0; i < 5; i++) {
       arr.push(
         <FontAwesomeIcon
-          className="cursor-pointer text-[#38415D] hover:text-[#474747]"
+          className="cursor-pointer text-[#38415D] hover:text-[#474747] md:w-[10px] md:h-[10px] md:text-[#999898]"
           key={"star-" + i}
           icon={faStar}
         />
