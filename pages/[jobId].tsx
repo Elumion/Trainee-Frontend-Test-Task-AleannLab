@@ -18,8 +18,8 @@ import {
   faChevronLeft,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-const token = process.env.bearer_token;
-let key = process.env.google_maps_key;
+const token = process.env.NEXT_PUBLIC_BEARER_TOKEN;
+let key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
 interface Props {
   data: JobItemType;

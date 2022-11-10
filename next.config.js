@@ -14,10 +14,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    bearer_token: "BEARER",
-    google_maps_key: "GOOGLEMAPS",
-  },
 };
 
 module.exports = nextConfig;
