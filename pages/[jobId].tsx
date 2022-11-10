@@ -249,7 +249,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     });
 
   if ((data as { error: string }).error) {
-    return { props: { data: (data as { error: string }).error } };
+    return { props: { data: { error: (data as { error: string }).error } } };
   }
   const item = (data as JobItemType[])?.filter(
     (el) => el.id === context.params?.jobId
